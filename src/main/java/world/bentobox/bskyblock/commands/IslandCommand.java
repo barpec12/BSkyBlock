@@ -4,19 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import world.bentobox.bentobox.api.commands.CompositeCommand;
-import world.bentobox.bentobox.api.commands.island.IslandBanCommand;
-import world.bentobox.bentobox.api.commands.island.IslandBanlistCommand;
-import world.bentobox.bentobox.api.commands.island.IslandCreateCommand;
-import world.bentobox.bentobox.api.commands.island.IslandGoCommand;
-import world.bentobox.bentobox.api.commands.island.IslandInfoCommand;
-import world.bentobox.bentobox.api.commands.island.IslandLanguageCommand;
-import world.bentobox.bentobox.api.commands.island.IslandResetCommand;
-import world.bentobox.bentobox.api.commands.island.IslandResetnameCommand;
-import world.bentobox.bentobox.api.commands.island.IslandSethomeCommand;
-import world.bentobox.bentobox.api.commands.island.IslandSetnameCommand;
-import world.bentobox.bentobox.api.commands.island.IslandSettingsCommand;
-import world.bentobox.bentobox.api.commands.island.IslandSpawnCommand;
-import world.bentobox.bentobox.api.commands.island.IslandUnbanCommand;
+import world.bentobox.bentobox.api.commands.island.*;
 import world.bentobox.bentobox.api.commands.island.team.IslandTeamCommand;
 import world.bentobox.bentobox.api.localization.TextVariables;
 import world.bentobox.bentobox.api.user.User;
@@ -40,7 +28,7 @@ public class IslandCommand extends CompositeCommand {
         // Set up subcommands
         new IslandAboutCommand(this);
         new IslandInfoCommand(this);
-        new IslandCreateCommand(this);
+        new IslandSchemsPanelCommand(this, new IslandCreateCommand(this));
         new IslandGoCommand(this);
         new IslandSpawnCommand(this);
         new IslandResetCommand(this);
@@ -70,6 +58,9 @@ public class IslandCommand extends CompositeCommand {
                 return getSubCommand("go").map(goCmd -> goCmd.execute(user, goCmd.getLabel(), new ArrayList<>())).orElse(false);
             }
             // No islands currently
+            if(user.hasPermission("island.schemspanel")){
+                return getSubCommand("schems").map(schemCmd -> schemCmd.execute(user, schemCmd.getLabel(), new ArrayList<>())).orElse(false);
+            }
             return getSubCommand("create").map(createCmd -> createCmd.execute(user, createCmd.getLabel(), new ArrayList<>())).orElse(false);
         }
         user.sendMessage("general.errors.unknown-command", TextVariables.LABEL, getTopLabel());
