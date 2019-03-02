@@ -58,7 +58,7 @@ public class IslandCommand extends CompositeCommand {
                 return getSubCommand("go").map(goCmd -> goCmd.execute(user, goCmd.getLabel(), new ArrayList<>())).orElse(false);
             }
             // No islands currently
-            if(user.hasPermission("island.schemspanel")){
+            if(user.hasPermission(this.getPermissionPrefix() + "island.schemspanel")){
                 return getSubCommand("schems").map(schemCmd -> schemCmd.execute(user, schemCmd.getLabel(), new ArrayList<>())).orElse(false);
             }
             return getSubCommand("create").map(createCmd -> createCmd.execute(user, createCmd.getLabel(), new ArrayList<>())).orElse(false);
